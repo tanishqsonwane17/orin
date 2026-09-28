@@ -1,0 +1,11 @@
+# Allow OpenAI's search crawler so Automis can appear in ChatGPT Search.
+User-agent: OAI-SearchBot
+Allow: /
+
+# Block OpenAI's training crawler while keeping search discovery enabled.
+User-agent: GPTBot
+Disallow: /
+
+# Default policy for other crawlers.
+User-agent: *
+Allow: /

@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: jarvis
+  main:
+    web-application-type: none
+    banner-mode: off
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+  sql:
+    init:
+      mode: always
+
+jarvis:
+  database:
+    path: ${JARVIS_DB_PATH:${user.home}/.jarvis/jarvis.db}
+  ai:
+    provider: openai
+    model: ${JARVIS_AI_MODEL:gpt-4.1-mini}
+    api-key: ${OPENAI_API_KEY:}
+    system-prompt: >
+      You are JARVIS, a local desktop assistant. Understand user commands and use
+      available tools to perform safe actions on the user's computer. Never invent
+      tool results. Never claim an action succeeded unless the tool confirms success.
+      Never execute arbitrary shell commands. Use the most appropriate registered
+      tool. If a required application or workspace is not configured, clearly tell
+      the user. For destructive or sensitive actions, request confirmation.
+  browser:
+    enabled: true
+  workspace:
+    default: development
