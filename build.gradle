@@ -20,7 +20,7 @@ configurations {
 }
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter"
+    implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-jdbc"
     implementation "org.springframework.shell:spring-shell-starter:3.3.3"
     implementation "dev.langchain4j:langchain4j:1.0.1"

@@ -1,14 +1,14 @@
 # JARVIS
 
-JARVIS is a CLI-first local desktop assistant for Windows. It accepts natural-language commands, routes them through a core `JarvisAgent`, and executes only registered safe tools such as opening configured applications, opening URLs, web search, music search, and workspace setup.
+Orin (built on the existing JARVIS core) is a local desktop assistant foundation for Windows. It includes the original CLI/tool architecture plus a React interface connected through a small Spring Boot REST API.
 
 ## Architecture
 
 ```text
-Terminal
+React UI / Terminal
   |
   v
-CLI layer
+REST API / CLI layer
   |
   v
 JarvisAgent
@@ -26,39 +26,62 @@ The agent core does not depend on the CLI. Future voice or GUI inputs can call `
 
 ## Tech Stack
 
-Java 21, Spring Boot 3, Spring Shell dependency, Gradle, LangChain4j dependency, SQLite, Playwright Java, SLF4J/Logback, JUnit 5, Mockito.
+Java 21, Spring Boot 3, React, Vite, Spring Shell dependency, Gradle, LangChain4j dependency, SQLite, Playwright Java, SLF4J/Logback, JUnit 5, Mockito.
 
 ## Prerequisites
 
 - JDK 21
-- Gradle, or use the generated project with your preferred Gradle wrapper
+- Node.js 18 or newer
 - Windows command aliases for configured applications, such as `code` for VS Code
 - Optional: `OPENAI_API_KEY` for future LLM-backed routing
 
-## Running JARVIS
+## Running Orin
+
+Start the Java API from the project root:
 
 ```powershell
-gradle bootRun
+$env:JAVA_HOME="C:\Program Files\Eclipse Adoptium\jdk-21.0.12.101-hotspot"
+.\gradlew.bat bootRun
 ```
 
-The CLI starts with:
+In a second terminal, start the React UI:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173`.
+
+The frontend reads its backend URL from `VITE_API_URL`. Copy `frontend/.env.example` to `frontend/.env` when a non-default URL is needed.
+
+### REST API
 
 ```text
-J A R V I S
-
-JARVIS is ready.
-
-You >
+GET  /api/assistant/health
+POST /api/assistant/message
 ```
 
-Type `exit` or `quit` to stop.
+The message endpoint currently returns a safe placeholder response and does not invoke AI or desktop automation.
+
+### Legacy CLI mode
+
+The existing CLI remains available:
+
+```powershell
+$env:JARVIS_CLI_ENABLED="true"
+.\gradlew.bat bootRun
+```
+
+Type `exit` or `quit` to stop the CLI.
 
 ## Installation
 
 Build the executable jar:
 
 ```powershell
-gradle bootJar
+.\gradlew.bat bootJar
 ```
 
 Create a small `jarvis.cmd` somewhere on your `PATH`:
@@ -154,7 +177,7 @@ Browser tools use Playwright Java and open Chromium pages. For the MVP, URL/sear
 ## Testing
 
 ```powershell
-gradle test
+.\gradlew.bat test
 ```
 
 OS launch behavior is mocked in unit tests. Tests must not open real desktop applications.

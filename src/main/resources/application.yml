@@ -2,8 +2,11 @@ spring:
   application:
     name: jarvis
   main:
-    web-application-type: none
+    web-application-type: servlet
     banner-mode: off
+  shell:
+    interactive:
+      enabled: ${JARVIS_CLI_ENABLED:false}
   datasource:
     driver-class-name: org.sqlite.JDBC
   sql:
@@ -11,6 +14,10 @@ spring:
       mode: always
 
 jarvis:
+  cli:
+    enabled: ${JARVIS_CLI_ENABLED:false}
+  api:
+    allowed-origins: ${JARVIS_ALLOWED_ORIGINS:http://localhost:5173}
   database:
     path: ${JARVIS_DB_PATH:${user.home}/.jarvis/jarvis.db}
   ai:
@@ -28,3 +35,6 @@ jarvis:
     enabled: true
   workspace:
     default: development
+
+server:
+  port: ${SERVER_PORT:8080}

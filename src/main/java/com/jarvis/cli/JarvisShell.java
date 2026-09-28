@@ -3,9 +3,11 @@ package com.jarvis.cli;
 import com.jarvis.agent.AgentResponse;
 import com.jarvis.agent.JarvisAgent;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnProperty(name = "jarvis.cli.enabled", havingValue = "true")
 public class JarvisShell implements CommandLineRunner {
 
     private final JarvisAgent jarvisAgent;
